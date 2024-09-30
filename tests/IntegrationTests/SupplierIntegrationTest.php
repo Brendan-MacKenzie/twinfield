@@ -94,6 +94,7 @@ class SupplierIntegrationTest extends BaseIntegrationTest
 
         $this->assertSame('1', $bank->getID());
         $this->assertSame('true', $bank->getDefault());
+        $this->assertSame('false', $bank->getBlocked());
         $this->assertSame('Supplier 2000', $bank->getAscription());
         $this->assertSame('123456789', $bank->getAccountnumber());
         $this->assertSame('', $bank->getBankname());
@@ -171,6 +172,7 @@ class SupplierIntegrationTest extends BaseIntegrationTest
 
         $bank = new SupplierBank();
         $bank->setDefault(true);
+        $bank->setBlocked(false);
         $bank->setAscription('Supplier 1');
         $bank->setAccountnumber('123456789');
         $bank->setAddressField2('');

@@ -33,7 +33,7 @@
         </address>
     </addresses>
     <banks>
-        <bank default="1">
+        <bank blocked="0" default="1">
             <ascription>Supplier 1</ascription>
             <accountnumber>123456789</accountnumber>
             <bankname>ABN Amro</bankname>
@@ -50,5 +50,9 @@
             </address>
         </bank>
     </banks>
+    <blockedaccountpaymentconditions>
+        <percentage>25.00</percentage>
+        <includevat>true</includevat>
+    </blockedaccountpaymentconditions>
 </dimension>
 

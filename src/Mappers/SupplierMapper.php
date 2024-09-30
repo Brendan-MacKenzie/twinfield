@@ -6,6 +6,7 @@ use PhpTwinfield\Response\Response;
 use PhpTwinfield\Supplier;
 use PhpTwinfield\SupplierAddress;
 use PhpTwinfield\SupplierBank;
+use PhpTwinfield\SupplierBlockedAccountPaymentConditions;
 use PhpTwinfield\Util;
 
 /**
@@ -177,10 +178,11 @@ class SupplierMapper extends BaseMapper
                 // Make a new tempory SupplierBank class
                 $temp_bank = new SupplierBank();
 
-                // Set the attributes ( id, default )
+                // Set the attributes ( id, default, blocked )
                 $temp_bank
                     ->setID($bankDOM->getAttribute('id'))
-                    ->setDefault($bankDOM->getAttribute('default'));
+                    ->setDefault($bankDOM->getAttribute('default'))
+                    ->setBlocked($bankDOM->getAttribute('blocked'));
 
                 // Loop through the element tags. Determine if it exists and set it if it does
                 foreach ($bankTags as $tag => $method) {
@@ -200,6 +202,44 @@ class SupplierMapper extends BaseMapper
                 // Clean that memory!
                 unset($temp_bank);
             }
+        }
+
+        $blockedAccountPaymentConditionsDOMTag = $responseDOM->getElementsByTagName('blockedaccountpaymentconditions');
+        if (isset($blockedAccountPaymentConditionsDOMTag) && $blockedAccountPaymentConditionsDOMTag->length > 0) {
+            
+            // Element tags and their methods for bank
+            $blockedAccountPaymentConditionsTags = array(
+                'percentage'      => 'setPercentage',
+                'includevat'      => 'setIncludevat'
+            );
+
+            $blockedAccountPaymentConditionsDOM = $blockedAccountPaymentConditionsDOMTag->item(0);
+
+            // Make a new tempory SupplierBank class
+            $temp_blockedAccountPaymentConditions = new SupplierBlockedAccountPaymentConditions();
+
+            // Loop through the element tags. Determine if it exists and set it if it does
+            foreach ($blockedAccountPaymentConditionsTags as $tag => $method) {
+
+                // Get the dom element
+                $_tag = $blockedAccountPaymentConditionsDOM->getElementsByTagName($tag)->item(0);
+
+                // Check if the tag is set, and its content is set, to prevent DOMNode errors
+                if (isset($_tag) && isset($_tag->textContent)) {
+                    $value = $_tag->textContent;
+                    if ($value == 'true' || $value == 'false') {
+                        $value = $value == 'true';
+                    }
+
+                    $temp_blockedAccountPaymentConditions->$method($value);
+                }
+            }
+
+            // Add the bank to the customer
+            $supplier->addBlockedAccountPaymentConditions($temp_blockedAccountPaymentConditions);
+
+            // Clean that memory!
+            unset($temp_blockedAccountPaymentConditions);
         }
 
         return $supplier;

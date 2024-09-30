@@ -10,6 +10,7 @@ class SupplierBank
 {
     private $ID;             # integer      Sequence number of the bank account line.
     private $default;        # true/false   Is this the default bank account, only one default bank account is possible.
+    private $blocked;        # true/false   Is this the blocked bank account, only one blocked bank account is possible.
     private $ascription;     # string(40)   Account holder.
     private $accountnumber;  # string(40)   Account number.
     private $addressField2;  # string(128)  Bank address.
@@ -47,6 +48,17 @@ class SupplierBank
     public function setDefault($default)
     {
         $this->default = $default;
+        return $this;
+    }
+
+    public function getBlocked()
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked($blocked)
+    {
+        $this->blocked = $blocked;
         return $this;
     }
 

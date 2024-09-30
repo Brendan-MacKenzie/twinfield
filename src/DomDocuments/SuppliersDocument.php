@@ -208,6 +208,10 @@ class SuppliersDocument extends \DOMDocument
                 // Set attributes
                 $bankElement->setAttribute('default', $bank->getDefault());
 
+                if ($bank->getBlocked()) {
+                    $bankElement->setAttribute('blocked', $bank->getBlocked());
+                }
+
                 // Go through each bank element and use the assigned method
                 foreach ($bankTags as $tag => $method) {
 
@@ -239,6 +243,38 @@ class SuppliersDocument extends \DOMDocument
                 $addressElement->appendChild($field2Element);
                 $addressElement->appendChild($field3Element);
                 $bankElement->appendChild($addressElement);
+            }
+        }
+
+        $blockedAccountPaymentConditions = $supplier->getBlockedAccountPaymentConditions();
+        if (!empty($blockedAccountPaymentConditions)) {
+
+            // blockedaccountpaymentconditions elements and their methods
+            $blockedAccountPaymentConditionsTags = array(
+                'percentage'    => 'getPercentage',
+                'includevat'    => 'getIncludevat'
+            );
+
+            // Make blockedaccountpaymentconditions element
+            $blockedAccountPaymentConditionsElement = $this->createElement('blockedaccountpaymentconditions');
+            $this->dimensionElement->appendChild($blockedAccountPaymentConditionsElement);
+
+            // Go through each blockedaccountpaymentconditions element and use the assigned method
+            foreach ($blockedAccountPaymentConditionsTags as $tag => $method) {
+
+                // Make the text node for the method value
+                $nodeValue = $blockedAccountPaymentConditions->$method();
+                if (is_bool($nodeValue)) {
+                    $nodeValue = ($nodeValue) ? 'true' : 'false';
+                }
+                $node = $this->createTextNode($nodeValue);
+
+                // Make the actual element and assign the text node
+                $element = $this->createElement($tag);
+                $element->appendChild($node);
+
+                // Add the completed element
+                $blockedAccountPaymentConditionsElement->appendChild($element);
             }
         }
     }

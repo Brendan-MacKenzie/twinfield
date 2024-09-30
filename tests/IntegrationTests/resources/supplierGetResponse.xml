@@ -60,7 +60,7 @@
         </address>
     </addresses>
     <banks>
-        <bank default="true" id="1">
+        <bank blocked="false" default="true" id="1">
             <ascription>Supplier 2000</ascription>
             <accountnumber>123456789</accountnumber>
             <address>
@@ -77,6 +77,10 @@
             <state></state>
         </bank>
     </banks>
+    <blockedaccountpaymentconditions>
+        <percentage>25.00</percentage>
+        <includevat>true</includevat>
+    </blockedaccountpaymentconditions>
     <groups>
         <group shortname="Relaties" name="Relaties">2REL</group>
     </groups>

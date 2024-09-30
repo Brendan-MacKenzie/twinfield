@@ -46,6 +46,7 @@ class Supplier
     private $eBillMail;
     private $addresses = array();
     private $banks = array();
+    private $blockedAccountPaymentConditions;
     private $groups;
 
     public function getCode()
@@ -346,6 +347,17 @@ class Supplier
         } else {
             return false;
         }
+    }
+
+    public function getBlockedAccountPaymentConditions()
+    {
+        return $this->blockedAccountPaymentConditions;
+    }
+
+    public function addBlockedAccountPaymentConditions(SupplierBlockedAccountPaymentConditions $blockedAccountPaymentConditions)
+    {
+        $this->blockedAccountPaymentConditions = $blockedAccountPaymentConditions;
+        return $this;
     }
 
     public function getGroups()

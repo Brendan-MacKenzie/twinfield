@@ -132,7 +132,7 @@ abstract class BaseApiConnector implements LoggerAwareInterface
             [
                 'document_xml' => Util::getPrettyXml($document),
             ]
-        );
+        );        
     }
 
     private function logResponse(Response $response): void
